@@ -2,6 +2,7 @@
 
 namespace Lexik\Bundle\FormFilterBundle\DependencyInjection;
 
+use Lexik\Bundle\FormFilterBundle\Event\Listener\PrepareListener;
 use Lexik\Bundle\FormFilterBundle\Filter\DataExtractor\Method\DataExtractionMethodInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -37,7 +38,7 @@ class LexikFormFilterExtension extends Extension
         }
 
         if (isset($config['force_case_insensitivity'])) {
-            $filterPrepareDef = $container->getDefinition('lexik_form_filter.filter_prepare');
+            $filterPrepareDef = $container->getDefinition(PrepareListener::class);
             $filterPrepareDef->addMethodCall(
                 'setForceCaseInsensitivity',
                 array($config['force_case_insensitivity'])
@@ -45,7 +46,7 @@ class LexikFormFilterExtension extends Extension
         }
 
         if (isset($config['encoding'])) {
-            $filterPrepareDef = $container->getDefinition('lexik_form_filter.filter_prepare');
+            $filterPrepareDef = $container->getDefinition(PrepareListener::class);
             $filterPrepareDef->addMethodCall(
                 'setEncoding',
                 array($config['encoding'])
