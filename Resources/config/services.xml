@@ -4,39 +4,26 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="lexik_form_filter.query_builder_updater.class">Lexik\Bundle\FormFilterBundle\Filter\FilterBuilderUpdater</parameter>
-        <parameter key="lexik_form_filter.form_data_extractor.class">Lexik\Bundle\FormFilterBundle\Filter\DataExtractor\FormDataExtractor</parameter>
-        <parameter key="lexik_form_filter.data_extraction_method.default.class">Lexik\Bundle\FormFilterBundle\Filter\DataExtractor\Method\DefaultExtractionMethod</parameter>
-        <parameter key="lexik_form_filter.data_extraction_method.text.class">Lexik\Bundle\FormFilterBundle\Filter\DataExtractor\Method\TextExtractionMethod</parameter>
-        <parameter key="lexik_form_filter.data_extraction_method.key_values.class">Lexik\Bundle\FormFilterBundle\Filter\DataExtractor\Method\ValueKeysExtractionMethod</parameter>
-        <parameter key="lexik_form_filter.filter_prepare.class">Lexik\Bundle\FormFilterBundle\Event\Listener\PrepareListener</parameter>
-    </parameters>
-
     <services>
-        <!-- query builder updater -->
-        <service id="lexik_form_filter.query_builder_updater" class="%lexik_form_filter.query_builder_updater.class%">
-            <argument type="service" id="lexik_form_filter.form_data_extractor" />
-            <argument type="service" id="event_dispatcher" />
-        </service>
+        <defaults autowire="true" autoconfigure="true" public="false"/>
 
-        <!-- form data extraction -->
-        <service id="lexik_form_filter.form_data_extractor" class="%lexik_form_filter.form_data_extractor.class%" />
+        <service id="Lexik\Bundle\FormFilterBundle\Filter\FilterBuilderUpdaterInterface"
+                 alias="Lexik\Bundle\FormFilterBundle\Filter\FilterBuilderUpdater"/>
 
-        <service id="lexik_form_filter.data_extraction_method.default" class="%lexik_form_filter.data_extraction_method.default.class%">
-            <tag name="lexik_form_filter.data_extraction_method" />
-        </service>
+        <service id="Lexik\Bundle\FormFilterBundle\Filter\FilterBuilderUpdater"/>
 
-        <service id="lexik_form_filter.data_extraction_method.text" class="%lexik_form_filter.data_extraction_method.text.class%">
-            <tag name="lexik_form_filter.data_extraction_method" />
-        </service>
+        <service id="Lexik\Bundle\FormFilterBundle\Filter\DataExtractor\FormDataExtractorInterface"
+                 alias="Lexik\Bundle\FormFilterBundle\Filter\DataExtractor\FormDataExtractor"/>
 
-        <service id="lexik_form_filter.data_extraction_method.key_values" class="%lexik_form_filter.data_extraction_method.key_values.class%">
-            <tag name="lexik_form_filter.data_extraction_method" />
-        </service>
+        <service id="Lexik\Bundle\FormFilterBundle\Filter\DataExtractor\FormDataExtractor"/>
 
-        <!-- Prepare listener -->
-        <service id="lexik_form_filter.filter_prepare" class="%lexik_form_filter.filter_prepare.class%">
+        <service id="Lexik\Bundle\FormFilterBundle\Filter\DataExtractor\Method\DefaultExtractionMethod"/>
+
+        <service id="Lexik\Bundle\FormFilterBundle\Filter\DataExtractor\Method\TextExtractionMethod"/>
+
+        <service id="Lexik\Bundle\FormFilterBundle\Filter\DataExtractor\Method\ValueKeysExtractionMethod"/>
+
+        <service id="Lexik\Bundle\FormFilterBundle\Event\Listener\PrepareListener">
             <tag name="kernel.event_listener" event="lexik_filter.prepare" method="onFilterBuilderPrepare" />
         </service>
     </services>

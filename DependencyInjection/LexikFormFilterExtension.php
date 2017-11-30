@@ -2,11 +2,11 @@
 
 namespace Lexik\Bundle\FormFilterBundle\DependencyInjection;
 
+use Lexik\Bundle\FormFilterBundle\Filter\DataExtractor\Method\DataExtractionMethodInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
-use Lexik\Bundle\FormFilterBundle\DependencyInjection\Configuration;
 use Lexik\Bundle\FormFilterBundle\Filter\FilterOperands;
 
 /**
@@ -53,6 +53,13 @@ class LexikFormFilterExtension extends Extension
         }
 
         $container->setParameter('lexik_form_filter.where_method', $config['where_method']);
-        $container->setParameter('lexik_form_filter.text.condition_pattern', FilterOperands::getStringOperandByString($config['condition_pattern']));
+        $container->setParameter(
+            'lexik_form_filter.text.condition_pattern',
+            FilterOperands::getStringOperandByString($config['condition_pattern'])
+        );
+
+        /* Auto configure tags */
+        $container->registerForAutoconfiguration(DataExtractionMethodInterface::class)
+            ->addTag('lexik_form_filter.data_extraction_method');
     }
 }

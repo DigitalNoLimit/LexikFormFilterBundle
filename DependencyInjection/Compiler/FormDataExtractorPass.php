@@ -2,6 +2,7 @@
 
 namespace Lexik\Bundle\FormFilterBundle\DependencyInjection\Compiler;
 
+use Lexik\Bundle\FormFilterBundle\Filter\DataExtractor\FormDataExtractor;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -18,10 +19,11 @@ class FormDataExtractorPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if ($container->hasDefinition('lexik_form_filter.form_data_extractor')) {
-            $definition = $container->getDefinition('lexik_form_filter.form_data_extractor');
+        if ($container->hasDefinition(FormDataExtractor::class)) {
+            $definition = $container->getDefinition(FormDataExtractor::class);
 
-            foreach ($container->findTaggedServiceIds('lexik_form_filter.data_extraction_method') as $id => $attributes) {
+            foreach ($container->findTaggedServiceIds('lexik_form_filter.data_extraction_method') as
+                     $id => $attributes) {
                 $definition->addMethodCall('addMethod', array(new Reference($id)));
             }
         }
